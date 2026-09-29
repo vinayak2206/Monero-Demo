@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Monero: Privacy in 90 Seconds</title>
+    <style>
+      :root {
+        --bg: #1b1715;
+        --panel: #26201d;
+        --line: #3a322d;
+        --text: #f4ede8;
+        --muted: #a99d95;
+        --accent: #ff6600;
+        --ok: #5fd18a;
+        --mask: #3a322d;
+        box-sizing: border-box;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+      @media (prefers-color-scheme: light) {
+        :root:not([data-theme="dark"]) {
+          --bg: #f7f2ee;
+          --panel: #fff;
+          --line: #e2d8d0;
+          --text: #2a2320;
+          --muted: #6d625b;
+          --accent: #e85d00;
+          --ok: #1f8f4e;
+          --mask: #e8dfd8;
+        }
+      }
+      :root[data-theme="light"] {
+        --bg: #f7f2ee;
+        --panel: #fff;
+        --line: #e2d8d0;
+        --text: #2a2320;
+        --muted: #6d625b;
+        --accent: #e85d00;
+        --ok: #1f8f4e;
+        --mask: #e8dfd8;
+      }
+      :root[data-theme="dark"] {
+        --bg: #1b1715;
+        --panel: #26201d;
+        --line: #3a322d;
+        --text: #f4ede8;
+        --muted: #a99d95;
+        --accent: #ff6600;
+        --ok: #5fd18a;
+        --mask: #3a322d;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-padding-top: env(safe-area-inset-top, 0px);
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font:
+          16px/1.5 system-ui,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+      }
+      .wrap {
+        max-width: 1040px;
+        margin: 0 auto;
+        padding: 24px 18px 48px;
+      }
+      h1 {
+        font-size: clamp(1.6rem, 4vw, 2.4rem);
+        margin: 0 0 4px;
+        letter-spacing: -0.02em;
+      }
+      .sub {
+        color: var(--muted);
+        margin: 0 0 20px;
+      }
+      .steps {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-bottom: 18px;
+      }
+      .steps button {
+        flex: 1 1 130px;
+        text-align: left;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        color: var(--muted);
+        border-radius: 8px;
+        padding: 8px 10px;
+        font: inherit;
+        font-size: 0.85rem;
+        cursor: pointer;
+      }
+      .steps button b {
+        display: inline-grid;
+        place-items: center;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: var(--line);
+        color: var(--text);
+        margin-right: 6px;
+        font-size: 0.8rem;
+      }
+      .steps button.on {
+        border-color: var(--accent);
+        color: var(--text);
+      }
+      .steps button.on b,
+      .steps button.done b {
+        background: var(--accent);
+        color: #fff;
+      }
+      .main {
+        display: grid;
+        grid-template-columns: 5fr 6fr;
+        gap: 18px;
+      }
+      @media (max-width: 760px) {
+        .main {
+          grid-template-columns: 1fr;
+        }
+      }
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 18px;
+      }
+      .card h2 {
+        margin: 0 0 8px;
+        font-size: 1.25rem;
+      }
+      .card p {
+        margin: 0 0 12px;
+      }
+      .say {
+        border-left: 3px solid var(--accent);
+        padding: 6px 12px;
+        color: var(--muted);
+        font-style: italic;
+        margin-top: 14px;
+      }
+      .say small {
+        display: block;
+        font-style: normal;
+        font-weight: 600;
+        color: var(--accent);
+        margin-bottom: 2px;
+      }
+      .tabs {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 12px;
+      }
+      .tabs button {
+        flex: 1;
+        background: transparent;
+        border: 1px solid var(--line);
+        color: var(--muted);
+        border-radius: 999px;
+        padding: 6px 8px;
+        font: inherit;
+        font-size: 0.85rem;
+        cursor: pointer;
+      }
+      .tabs button.on {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #fff;
+      }
+      .mode {
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin: 0 0 10px;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: 78px 1fr;
+        gap: 10px;
+        align-items: start;
+        padding: 10px 0;
+        border-top: 1px solid var(--line);
+      }
+      .row:first-of-type {
+        border-top: 0;
+      }
+      .lab {
+        color: var(--muted);
+        font-size: 0.85rem;
+        padding-top: 2px;
+      }
+      .val {
+        font-family: ui-monospace, Menlo, Consolas, monospace;
+        font-size: 0.9rem;
+        word-break: break-word;
+      }
+      .val em {
+        display: block;
+        font-family: system-ui, sans-serif;
+        font-style: normal;
+        color: var(--muted);
+        font-size: 0.8rem;
+        margin-top: 2px;
+      }
+      .masked {
+        display: inline-block;
+        background: repeating-linear-gradient(
+          45deg,
+          var(--mask),
+          var(--mask) 6px,
+          transparent 6px,
+          transparent 12px
+        );
+        border: 1px dashed var(--muted);
+        border-radius: 6px;
+        padding: 2px 10px;
+        letter-spacing: 0.2em;
+      }
+      .flash {
+        animation: fl 1.2s ease-out;
+      }
+      @keyframes fl {
+        from {
+          background: rgba(255, 102, 0, 0.35);
+        }
+        to {
+          background: transparent;
+        }
+      }
+      .ring {
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+        gap: 4px;
+        margin: 6px 0 2px;
+        max-width: 260px;
+      }
+      .ring i {
+        height: 20px;
+        border-radius: 5px;
+        background: var(--mask);
+        border: 1px solid var(--line);
+      }
+      .ring i.real {
+        background: var(--accent);
+        border-color: var(--accent);
+      }
+      .checks {
+        margin-top: 14px;
+        padding-top: 12px;
+        border-top: 1px solid var(--line);
+        font-size: 0.9rem;
+      }
+      .checks div {
+        color: var(--ok);
+        margin: 2px 0;
+      }
+      .chain {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        margin-top: 12px;
+        flex-wrap: wrap;
+      }
+      .blk {
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 4px 8px;
+        font:
+          0.75rem ui-monospace,
+          monospace;
+        color: var(--muted);
+      }
+      .blk.new {
+        border-color: var(--accent);
+        color: var(--text);
+        animation: fl 1.6s ease-out;
+      }
+      .ctrl {
+        display: flex;
+        gap: 8px;
+        margin-top: 18px;
+        flex-wrap: wrap;
+      }
+      .ctrl button {
+        font: inherit;
+        border-radius: 8px;
+        border: 1px solid var(--line);
+        background: var(--panel);
+        color: var(--text);
+        padding: 9px 16px;
+        cursor: pointer;
+      }
+      .ctrl .primary {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #fff;
+        font-weight: 600;
+      }
+      button:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+      button:disabled {
+        opacity: 0.4;
+        cursor: default;
+      }
+      .note {
+        color: var(--muted);
+        font-size: 0.8rem;
+        margin-top: 16px;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .flash,
+        .blk.new {
+          animation: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Alice pays Bob 1 XMR</h1>
+      <p class="sub">
+        Step through one Monero payment and watch what a stranger can see on the
+        public ledger.
+      </p>
+      <div class="steps" id="steps"></div>
+      <div class="main">
+        <div class="card">
+          <h2 id="t"></h2>
+          <p id="d"></p>
+          <div class="say">
+            <small>Presenter says</small><span id="s"></span>
+          </div>
+          <div class="ctrl">
+            <button id="back">Back</button>
+            <button id="next" class="primary">Next step</button>
+            <button id="play">Auto-play</button>
+            <button id="reset">Reset</button>
+          </div>
+          <p class="note">
+            Simulation for learning. No real money or wallet is used. Tip: press
+            the left and right arrow keys.
+          </p>
+        </div>
+        <div class="card">
+          <div class="tabs" id="tabs"></div>
+          <p class="mode" id="mode"></p>
+          <div id="rec"></div>
+          <div id="extra"></div>
+        </div>
+      </div>
+    </div>
+    <script>
+      var steps = [
+        {
+          n: "Pick payment",
+          t: "1. Alice picks who to pay and how much",
+          d: "Alice opens her wallet, chooses Bob and enters 1 XMR. On a normal public blockchain like Bitcoin, the record would show all of this to everyone.",
+          s: "Here is what a normal blockchain would show. Sender, receiver and amount are all visible. Now watch Monero hide each one.",
+        },
+        {
+          n: "One-time address",
+          t: "2. A one-time address is made for Bob",
+          d: "Bob's real address is never put on the chain. Alice's wallet creates a fresh stealth address that is used for this payment only. Bob's wallet spots it using his private keys.",
+          s: "Step 2 hides the receiver. The chain shows a throwaway address that no one can link back to Bob.",
+        },
+        {
+          n: "Ring signature",
+          t: "3. A ring signature hides who really sent it",
+          d: "Alice's real coin is mixed with 15 decoy coins taken from the chain. The signature proves one of the 16 signed, but not which one.",
+          s: "Step 3 hides the sender. Switch to Alice's view to see the real one. A stranger just sees 16 equal possibilities.",
+        },
+        {
+          n: "RingCT",
+          t: "4. RingCT hides the amount",
+          d: "The amount is replaced by a cryptographic commitment. Math still proves the inputs equal the outputs, so no coins are created from nothing.",
+          s: "Step 4 hides the amount, but the network can still check that the payment is honest.",
+        },
+        {
+          n: "Nodes verify",
+          t: "5. Nodes check that all the rules are followed",
+          d: "Nodes never see the hidden details. They verify the proofs instead: valid signature, no double-spend, amounts balance.",
+          s: "Nobody has to trust Alice. The network checks the math without learning the secrets.",
+        },
+        {
+          n: "Miners add block",
+          t: "6. Miners add the payment with RandomX",
+          d: "Miners use RandomX, a mining method made for normal computers, to add the payment to a new block. A block arrives about every 2 minutes.",
+          s: "The payment is now final. A stranger sees that something happened, but not who, to whom, or how much.",
+        },
+      ];
+      var views = [
+        ["stranger", "Stranger"],
+        ["bob", "Bob"],
+        ["alice", "Alice"],
+      ];
+      var step = 0,
+        view = "stranger",
+        timer = null;
+      var $ = function (i) {
+        return document.getElementById(i);
+      };
+      function ringHTML(real) {
+        var h = '<div class="ring">';
+        for (var i = 0; i < 16; i++)
+          h += "<i" + (real && i === 9 ? ' class="real"' : "") + "></i>";
+        return h + "</div>";
+      }
+      function rec() {
+        var st = step + 1,
+          f = function (r) {
+            return st === r ? " flash" : "";
+          };
+        var sender, receiver, amount;
+        if (st < 3) sender = "4Ab7…9Qz (Alice)<em>Visible to everyone</em>";
+        else if (view === "alice")
+          sender =
+            ringHTML(true) + "<em>Alice knows her coin is the orange one</em>";
+        else if (view === "bob")
+          sender =
+            '<span class="masked">hidden</span><em>Monero does not tell Bob who paid</em>';
+        else
+          sender =
+            ringHTML(false) +
+            "<em>1 of 16 possible senders. No one can tell which.</em>";
+        if (st < 2) receiver = "48xK…Hk2 (Bob)<em>Visible to everyone</em>";
+        else if (view === "bob")
+          receiver =
+            "You (Bob)<em>Your wallet spots the payment with your private view key</em>";
+        else if (view === "alice")
+          receiver =
+            "One-time address 8Bq…x7f<em>Created by your wallet for Bob</em>";
+        else
+          receiver =
+            "8Bq…x7f<em>One-time address, used once. Not linked to Bob.</em>";
+        if (st < 4 || view !== "stranger")
+          amount =
+            "1.000 XMR" +
+            (st >= 4
+              ? "<em>Decoded with keys</em>"
+              : "<em>Visible to everyone</em>");
+        else
+          amount =
+            '<span class="masked">••••••</span><em>Hidden. The proof still shows inputs equal outputs.</em>';
+        var mode =
+          st < 2
+            ? "Ledger record: what a normal public blockchain shows"
+            : "Ledger record as seen by: " +
+              views.filter(function (v) {
+                return v[0] === view;
+              })[0][1];
+        $("mode").textContent = mode;
+        $("rec").innerHTML =
+          '<div class="row' +
+          f(3) +
+          '"><div class="lab">Sender</div><div class="val">' +
+          sender +
+          "</div></div>" +
+          '<div class="row' +
+          f(2) +
+          '"><div class="lab">Receiver</div><div class="val">' +
+          receiver +
+          "</div></div>" +
+          '<div class="row' +
+          f(4) +
+          '"><div class="lab">Amount</div><div class="val">' +
+          amount +
+          "</div></div>";
+        var x = "";
+        if (st >= 5)
+          x +=
+            '<div class="checks"><div>✓ Ring signature is valid</div><div>✓ Coin not spent before (key image is new)</div><div>✓ Hidden amounts balance</div></div>';
+        if (st >= 6)
+          x +=
+            '<div class="chain"><span class="blk">Block 1</span><span class="blk">Block 2</span><span class="blk">Block 3</span><span class="blk new">New block · RandomX · ~2 min</span></div>';
+        $("extra").innerHTML = x;
+      }
+      function draw() {
+        var s = steps[step];
+        $("t").textContent = s.t;
+        $("d").textContent = s.d;
+        $("s").textContent = s.s;
+        $("steps").innerHTML = steps
+          .map(function (p, i) {
+            return (
+              '<button data-i="' +
+              i +
+              '" class="' +
+              (i === step ? "on" : i < step ? "done" : "") +
+              '"><b>' +
+              (i + 1) +
+              "</b>" +
+              p.n +
+              "</button>"
+            );
+          })
+          .join("");
+        $("tabs").innerHTML = views
+          .map(function (v) {
+            return (
+              '<button data-v="' +
+              v[0] +
+              '" class="' +
+              (v[0] === view ? "on" : "") +
+              '">' +
+              v[1] +
+              "</button>"
+            );
+          })
+          .join("");
+        $("back").disabled = step === 0;
+        $("next").disabled = step === steps.length - 1;
+        rec();
+      }
+      function go(i) {
+        step = Math.max(0, Math.min(steps.length - 1, i));
+        draw();
+        if (step === steps.length - 1) stop();
+      }
+      function stop() {
+        if (timer) {
+          clearInterval(timer);
+          timer = null;
+        }
+        $("play").textContent = "Auto-play";
+      }
+      $("steps").onclick = function (e) {
+        var b = e.target.closest("button");
+        if (b) {
+          stop();
+          go(+b.dataset.i);
+        }
+      };
+      $("tabs").onclick = function (e) {
+        var b = e.target.closest("button");
+        if (b) {
+          view = b.dataset.v;
+          draw();
+        }
+      };
+      $("next").onclick = function () {
+        stop();
+        go(step + 1);
+      };
+      $("back").onclick = function () {
+        stop();
+        go(step - 1);
+      };
+      $("reset").onclick = function () {
+        stop();
+        view = "stranger";
+        go(0);
+      };
+      $("play").onclick = function () {
+        if (timer) {
+          stop();
+          return;
+        }
+        if (step === steps.length - 1) go(0);
+        $("play").textContent = "Pause";
+        timer = setInterval(function () {
+          go(step + 1);
+        }, 4500);
+      };
+      document.onkeydown = function (e) {
+        if (e.key === "ArrowRight") {
+          stop();
+          go(step + 1);
+        } else if (e.key === "ArrowLeft") {
+          stop();
+          go(step - 1);
+        }
+      };
+      draw();
+    </script>
+  </body>
+</html>
