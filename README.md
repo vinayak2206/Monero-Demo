@@ -16,7 +16,6 @@
 ---
 
 ## 📌 Table of Contents
-
 - [About](#-about)
 - [Features](#-features)
 - [The Payment Flow](#-the-payment-flow)
@@ -33,7 +32,7 @@
 
 ## 📖 About
 
-This is the live demo for our **Monero (XMR) case study** in _Principles of Blockchain Technology_.
+This is the live demo for our **Monero (XMR) case study** in *Principles of Blockchain Technology*.
 
 Most blockchains are fully public: anyone can see who paid whom and how much. **Monero is private by default.** This demo shows how, using one example payment where **Alice sends 1 XMR to Bob**.
 
@@ -45,16 +44,16 @@ You click through **six steps**. At each step, one more detail of the public led
 
 ## ✨ Features
 
-|     | Feature                    | What it does                                                       |
-| --- | -------------------------- | ------------------------------------------------------------------ |
-| 🪜  | **6-step walkthrough**     | Follows a Monero payment from wallet to block                      |
-| 👀  | **3 viewpoints**           | Switch between Stranger, Bob and Alice                             |
-| 🔗  | **Ring signature visual**  | Shows 16 possible senders, with the real one highlighted for Alice |
-| 📒  | **Live ledger record**     | Sender, receiver and amount are hidden step by step                |
-| 🎤  | **Presenter script**       | A short line to say out loud at every step                         |
-| ⌨️  | **Auto-play and keyboard** | Use the ← and → keys, or press Auto-play                           |
-| 📴  | **Works offline**          | One HTML file, no libraries, no internet needed                    |
-| 📱  | **Responsive**             | Works on laptop, tablet and phone, in light and dark mode          |
+| | Feature | What it does |
+|---|---|---|
+| 🪜 | **6-step walkthrough** | Follows a Monero payment from wallet to block |
+| 👀 | **3 viewpoints** | Switch between Stranger, Bob and Alice |
+| 🔗 | **Ring signature visual** | Shows 16 possible senders, with the real one highlighted for Alice |
+| 📒 | **Live ledger record** | Sender, receiver and amount are hidden step by step |
+| 🎤 | **Presenter script** | A short line to say out loud at every step |
+| ⌨️ | **Auto-play and keyboard** | Use the ← and → keys, or press Auto-play |
+| 📴 | **Works offline** | One HTML file, no libraries, no internet needed |
+| 📱 | **Responsive** | Works on laptop, tablet and phone, in light and dark mode |
 
 ---
 
@@ -80,26 +79,26 @@ A stranger looking at the ledger can see that **a payment happened**, but **not 
 
 ## ⚖️ Monero vs a Normal Blockchain
 
-|              | Normal public blockchain (e.g. Bitcoin) | Monero (XMR)                       |
-| ------------ | --------------------------------------- | ---------------------------------- |
-| **Sender**   | Visible                                 | Hidden in a ring of 16             |
-| **Receiver** | Visible address                         | One-time stealth address           |
-| **Amount**   | Visible                                 | Hidden with RingCT                 |
-| **Privacy**  | Optional, needs extra tools             | On by default                      |
-| **Mining**   | Specialised hardware is common          | RandomX, made for normal computers |
+| | Normal public blockchain (e.g. Bitcoin) | Monero (XMR) |
+|---|---|---|
+| **Sender** | Visible | Hidden in a ring of 16 |
+| **Receiver** | Visible address | One-time stealth address |
+| **Amount** | Visible | Hidden with RingCT |
+| **Privacy** | Optional, needs extra tools | On by default |
+| **Mining** | Specialised hardware is common | RandomX, made for normal computers |
 
 ---
 
 ## 🧠 The Technology Behind It
 
-| Step | Technology            | What it does                                                                            |
-| :--: | --------------------- | --------------------------------------------------------------------------------------- |
-|  1   | **Stealth addresses** | A fresh one-time address for every payment, so payments cannot be linked to Bob         |
-|  2   | **Ring signatures**   | Proves one of 16 coins signed, without saying which one                                 |
-|  3   | **RingCT**            | Hides the amount but still proves inputs equal outputs, so no coins appear from nothing |
-|  4   | **Key images**        | Stops the same coin being spent twice, without revealing which coin it is               |
-|  5   | **Node verification** | Every node checks the proofs. No one has to trust Alice                                 |
-|  6   | **RandomX mining**    | A mining method made for normal computers, which keeps mining open to more people       |
+| Step | Technology | What it does |
+|:---:|---|---|
+| 1 | **Stealth addresses** | A fresh one-time address for every payment, so payments cannot be linked to Bob |
+| 2 | **Ring signatures** | Proves one of 16 coins signed, without saying which one |
+| 3 | **RingCT** | Hides the amount but still proves inputs equal outputs, so no coins appear from nothing |
+| 4 | **Key images** | Stops the same coin being spent twice, without revealing which coin it is |
+| 5 | **Node verification** | Every node checks the proofs. No one has to trust Alice |
+| 6 | **RandomX mining** | A mining method made for normal computers, which keeps mining open to more people |
 
 ---
 
@@ -111,7 +110,7 @@ A stranger looking at the ledger can see that **a payment happened**, but **not 
 2. At **step 3**, click **Alice** to show her real coin, then go back to **Stranger**.
 3. At **step 4**, click **Bob** to show he can still see 1 XMR.
 4. Finish **steps 5 and 6** to show the network checks and the new block.
-5. Say the takeaway: _"Same kind of payment, but a stranger can't see who paid whom or how much."_
+5. Say the takeaway: *"Same kind of payment, but a stranger can't see who paid whom or how much."*
 
 <!--
 SCREENSHOTS (optional): take screenshots of the demo, put them in the assets folder, then remove this comment markers and use:
@@ -130,8 +129,7 @@ SCREENSHOTS (optional): take screenshots of the demo, put them in the assets fol
 **Live site:** https://vinayak2206.github.io/Monero-Demo/
 
 **Deploy your own copy (free):**
-
-- **GitHub Pages:** _Settings → Pages →_ branch `main` and folder `/ (root)`
+- **GitHub Pages:** *Settings → Pages →* branch `main` and folder `/ (root)`
 - **Netlify Drop:** drag the folder onto [app.netlify.com/drop](https://app.netlify.com/drop)
 - **Vercel:** import the repository at [vercel.com](https://vercel.com)
 
@@ -153,13 +151,13 @@ Monero-Demo/
 
 ## 👥 Team
 
-| Name     | Role                      |
-| -------- | ------------------------- |
+| Name | Role |
+|---|---|
 | Member 1 | Research and presentation |
 | Member 2 | Research and presentation |
 | Member 3 | Research and presentation |
 | Member 4 | Research and presentation |
-| Member 5 | Research and demo         |
+| Member 5 | Research and demo |
 
 **Course:** Principles of Blockchain Technology
 
